@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component type="desktop-application">
+  <id>tech.raildev.webbed</id>
+  <name>Webbed</name>
+  <summary>A simple, user friendly browser for Plasma Mobile/Desktop.</summary>
+  <metadata_license>FSFAP</metadata_license>
+  <project_license>MIT</project_license>
+  <developer_name>RailDev</developer_name>
+  <description>
+      <p>This mobile friendly web browser for the KDE ecosystem brings a lot to the table.</p>
+  </description>
+</component>

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=webbed
+Comment=webbed Kirigami Application
+Version=1.0
+Exec=webbed
+MimeType=application/x-webbed;
+Icon=applications-development
+Type=Application
+Terminal=false
+Categories=Qt;KDE;

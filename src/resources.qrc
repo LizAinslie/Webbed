@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="main.qml">contents/ui/main.qml</file>
+        <file alias="browser_data.qml">contents/ui/browser_data.qml</file>
+        <file alias="Functions.js">contents/ui/Functions.js</file>
+    </qresource>
+</RCC>

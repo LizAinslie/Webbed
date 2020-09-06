@@ -1,0 +1,32 @@
+Determining if the __GLIBC__ exist failed with the following output:
+Change Dir: /home/rail/code/webbed/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_bc733/fast && /usr/bin/make  -f CMakeFiles/cmTC_bc733.dir/build.make CMakeFiles/cmTC_bc733.dir/build
+make[1]: Entering directory '/home/rail/code/webbed/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_bc733.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_bc733.dir/CheckSymbolExists.c.o   -c /home/rail/code/webbed/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/home/rail/code/webbed/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function 'main':
+/home/rail/code/webbed/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: '__GLIBC__' undeclared (first use in this function); did you mean '__LINE__'?
+    8 |   return ((int*)(&__GLIBC__))[argc];
+      |                   ^~~~~~~~~
+      |                   __LINE__
+/home/rail/code/webbed/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: note: each undeclared identifier is reported only once for each function it appears in
+make[1]: *** [CMakeFiles/cmTC_bc733.dir/build.make:86: CMakeFiles/cmTC_bc733.dir/CheckSymbolExists.c.o] Error 1
+make[1]: Leaving directory '/home/rail/code/webbed/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:141: cmTC_bc733/fast] Error 2
+
+
+File /home/rail/code/webbed/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdlib.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef __GLIBC__
+  return ((int*)(&__GLIBC__))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
