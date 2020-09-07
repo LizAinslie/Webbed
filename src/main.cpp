@@ -4,6 +4,8 @@
 #include <QUrl>
 #include <KLocalizedContext>
 
+#include "UserAgent.h"
+
 Q_DECL_EXPORT int main(int argc, char *argv[]) {
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication app(argc, argv);
@@ -14,6 +16,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[]) {
     QQmlApplicationEngine engine;
     
     qmlRegisterSingletonType(QUrl("qrc:///browser_data.qml"), "tech.raildev.webbed.data", 1, 0, "BrowserData");
+    qmlRegisterType<UserAgent>("tech.raildev.webbed", 1, 0, "UserAgentGenerator");
 
     engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
     engine.load(QUrl(QStringLiteral("qrc:///main.qml")));

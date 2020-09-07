@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.3
 import QtWebEngine 1.10
 
 import tech.raildev.webbed.data 1.0
+import tech.raildev.webbed 1.0
 import "Functions.js" as Functions
 
 Kirigami.ApplicationWindow {
@@ -13,6 +14,26 @@ Kirigami.ApplicationWindow {
     title: i18n("Webbed")
 
     pageStack.initialPage: mainComponent
+    
+    globalDrawer: Kirigami.GlobalDrawer {
+        id: globalDrawer
+        
+        actions: [
+            Kirigami.Action {
+                checkable: true
+                iconName: "computer"
+                text: i18n("Show Desktop Site")
+                checked: !userAgentGenerator.isMobile
+                onTriggered: {
+                    userAgentGenerator.isMobile = !userAgentGenerator.isMobile;
+                }
+            }
+        ]
+    }
+    
+    UserAgentGenerator {
+        id: userAgentGenerator
+    }
     
     Component {
         id: mainComponent
@@ -27,6 +48,7 @@ Kirigami.ApplicationWindow {
                 Controls.TabBar {
                     id: tabs
                     Layout.preferredWidth: parent.width - Kirigami.Units.gridUnit * 2
+                    Layout.alignment: Qt.AlignLeft
                     
                     Repeater {
                         id: tabsRepeater
@@ -109,6 +131,10 @@ Kirigami.ApplicationWindow {
                             Layout.preferredWidth: parent.width
                             url: modelData
                             
+                            profile: WebEngineProfile {
+                                httpUserAgent: userAgentGenerator.userAgent
+                            }
+                            
                             onUrlChanged: {
                                 urlInput.text = url;
                                 BrowserData.tabs[index] = url;
@@ -119,6 +145,14 @@ Kirigami.ApplicationWindow {
                                 if (request.userInitiated) {
                                     BrowserData.createTab(request.requestedUrl.toString());
                                     showPassiveNotification(i18n("Website was opened in a new tab."));
+                                }
+                            }
+                            
+                            Connections {
+                                target: userAgentGenerator
+                                onUserAgentChanged: {
+                                    webView.profile.httpUserAgent = userAgentGenerator.userAgent;
+                                    webView.reload();
                                 }
                             }
                         }
