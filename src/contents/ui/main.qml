@@ -27,6 +27,16 @@ Kirigami.ApplicationWindow {
                 onTriggered: {
                     userAgentGenerator.isMobile = !userAgentGenerator.isMobile;
                 }
+            },
+            Kirigami.Action {
+                id: forwardButton
+                iconName: "go-next"
+                text: i18n("Go Forward")
+            },
+            Kirigami.Action {
+                id: backButton
+                iconName: "go-previous"
+                text: i18n("Go Back")
             }
         ]
     }
@@ -37,7 +47,6 @@ Kirigami.ApplicationWindow {
     
     Component {
         id: mainComponent
-        
         
         ColumnLayout {
             RowLayout {
@@ -153,6 +162,22 @@ Kirigami.ApplicationWindow {
                                 onUserAgentChanged: {
                                     webView.profile.httpUserAgent = userAgentGenerator.userAgent;
                                     webView.reload();
+                                }
+                            }
+                            
+                            Connections {
+                                target: backButton
+                                enabled: webView.canGoBack
+                                onTriggered: {
+                                    webView.goBack()
+                                }
+                            }
+                            
+                            Connections {
+                                target: forwardButton
+                                enabled: webView.canGoForward
+                                onTriggered: {
+                                    webView.goForward()
                                 }
                             }
                         }
