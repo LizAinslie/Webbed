@@ -37,6 +37,11 @@ Kirigami.ApplicationWindow {
                 id: backButton
                 iconName: "go-previous"
                 text: i18n("Go Back")
+            },
+            Kirigami.Action {
+                id: reloadButton
+                iconName: "gtk-convert"
+                text: i18n("Refresh Page")
             }
         ]
     }
@@ -148,6 +153,8 @@ Kirigami.ApplicationWindow {
                                 urlInput.text = url;
                                 BrowserData.tabs[index] = url;
                                 tabs.itemAt(index).text = Functions.truncateString(url.toString(), 37);
+                                backButton.enabled = webView.canGoBack;
+                                forwardButton.enabled = webView.canGoForward;
                             }
                             
                             onNewViewRequested: {
@@ -178,6 +185,13 @@ Kirigami.ApplicationWindow {
                                 enabled: webView.canGoForward
                                 onTriggered: {
                                     webView.goForward()
+                                }
+                            }
+                            
+                            Connections {
+                                target: reloadButton
+                                onTriggered: {
+                                    webView.reload();
                                 }
                             }
                         }
