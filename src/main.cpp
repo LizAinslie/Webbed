@@ -5,6 +5,7 @@
 #include <KLocalizedContext>
 
 #include "UserAgent.h"
+#include "UuidGenerator.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[]) {
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -17,6 +18,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[]) {
     
     qmlRegisterSingletonType(QUrl("qrc:///browser_data.qml"), "tech.raildev.webbed.data", 1, 0, "BrowserData");
     qmlRegisterType<UserAgent>("tech.raildev.webbed", 1, 0, "UserAgentGenerator");
+    qmlRegisterType<UuidGenerator>("tech.raildev.webbed.data", 1, 0, "UuidGeneratorBase");
+    qmlRegisterSingletonType(QUrl("qrc:///uuid_generator.qml"), "tech.raildev.webbed.data", 1, 0, "UuidGenerator");
 
     engine.rootContext()->setContextObject(new KLocalizedContext(&engine));
     engine.load(QUrl(QStringLiteral("qrc:///main.qml")));

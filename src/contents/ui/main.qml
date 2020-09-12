@@ -37,6 +37,11 @@ Kirigami.ApplicationWindow {
                 id: backButton
                 iconName: "go-previous"
                 text: i18n("Go Back")
+            },
+            Kirigami.Action {
+                id: reloadButton
+                iconName: "gtk-convert"
+                text: i18n("Refresh Page")
             }
         ]
     }
@@ -64,7 +69,30 @@ Kirigami.ApplicationWindow {
                         model: BrowserData.tabs
                         
                         Controls.TabButton {
-                            text: modelData
+                            text: modelData.url
+                            
+                            MouseArea {
+                                anchors.fill: parent
+                                acceptedButtons: Qt.LeftButton | Qt.RightButton
+                                
+                                onClicked: {
+                                    if (mouse.button === Qt.RightButton) tabContextMenu.popup();
+                                }
+                                
+                                onPressAndHold: {
+                                    if (mouse.source === Qt.MouseEventNotSynthesized) tabContextMenu.popup();
+                                }
+                                
+                                Controls.Menu {
+                                    id: tabContextMenu
+                                    Kirigami.Action {
+                                        text: i18n("Close Tab")
+                                        onTriggered: {
+                                            BrowserData.closeTab(modelData.id);
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -85,6 +113,11 @@ Kirigami.ApplicationWindow {
             Connections {
                 target: BrowserData
                 onTabCreated: {
+                    tabsRepeater.model = BrowserData.tabs
+                    pagesRepeater.model = BrowserData.tabs
+                }
+                
+                onTabClosed: {
                     tabsRepeater.model = BrowserData.tabs
                     pagesRepeater.model = BrowserData.tabs
                 }
@@ -138,7 +171,7 @@ Kirigami.ApplicationWindow {
                             Layout.fillHeight: true
                             Layout.preferredHeight: parent.height - Kirigami.Units.gridUnit * 2
                             Layout.preferredWidth: parent.width
-                            url: modelData
+                            url: modelData.url
                             
                             profile: WebEngineProfile {
                                 httpUserAgent: userAgentGenerator.userAgent
@@ -148,6 +181,8 @@ Kirigami.ApplicationWindow {
                                 urlInput.text = url;
                                 BrowserData.tabs[index] = url;
                                 tabs.itemAt(index).text = Functions.truncateString(url.toString(), 37);
+                                backButton.enabled = webView.canGoBack;
+                                forwardButton.enabled = webView.canGoForward;
                             }
                             
                             onNewViewRequested: {
@@ -178,6 +213,13 @@ Kirigami.ApplicationWindow {
                                 enabled: webView.canGoForward
                                 onTriggered: {
                                     webView.goForward()
+                                }
+                            }
+                            
+                            Connections {
+                                target: reloadButton
+                                onTriggered: {
+                                    webView.reload();
                                 }
                             }
                         }
